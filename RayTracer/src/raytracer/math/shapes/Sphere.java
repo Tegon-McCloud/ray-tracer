@@ -1,18 +1,22 @@
-package raytracer.math;
+package raytracer.math.shapes;
+
+import raytracer.math.Intersect;
+import raytracer.math.Ray;
+import raytracer.math.Shape;
+import raytracer.math.Vector;
+import raytracer.rendering.UVTexture;
 
 public class Sphere extends Shape{
 	
 	public float radius;
 	public Vector pos;
 	
-	
-	public Sphere(Vector color, Vector pos, float radius) {
-		super(color);
+	public Sphere(UVTexture texture, Vector pos, float radius) {
+		super(texture);
 		
 		this.pos = pos;
 		this.radius = radius;
 	}
-	
 	
 	/*
 	ray:
@@ -81,6 +85,17 @@ public class Sphere extends Shape{
 			
 		}
 		
+	}
+
+	@Override
+	public float[] toTexCoords(Vector surfacePos) {
+		
+		Vector n = surfacePos.sub(pos);
+		float[] coords = new float[2];
+		coords[0] = (float)(0.5 + Math.atan2(n.x, n.z)/(2*Math.PI));
+		coords[1] = (float)(0.5 - Math.asin(n.y)/Math.PI);
+				
+		return coords;
 	}
 	
 	
