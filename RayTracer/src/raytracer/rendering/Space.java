@@ -12,7 +12,7 @@ import raytracer.math.Intersect;
 import raytracer.math.Ray;
 import raytracer.math.Shape;
 import raytracer.math.Vector;
-import raytracer.math.shapes.Sphere;
+import raytracer.math.shapes.Triangle;
 
 public class Space {
 	
@@ -73,9 +73,17 @@ public class Space {
 	public static void main(String[] args) throws IOException {
 		
 		Space s = new Space();
-		Camera c = new Camera(512, 512, new Vector(0, 0, 0), (float)Math.PI/2, (float)Math.PI/2, 0, 0);
+		Camera c = new Camera(512, 512, new Vector(0, 0, 0), (float)Math.PI/2, (float)Math.PI/2, (float)Math.PI/8, (float)-Math.PI/8);
 		
-		s.add(new Sphere(new ImageTexture(new File("D:\\test\\texture.png")), new Vector(0, 0, -3), 1));
+		//s.add(new Sphere(new ImageTexture(new File("D:\\test\\texture.png")), new Vector(0, 0, -3), 1));
+		
+		s.add(new Triangle(new UVTexture() {
+			
+			@Override
+			public Vector getColor(float texX, float texY) {
+				return new Vector(1, 0, 0);
+			}
+		}, new Vector(0, 0, -3), new Vector(3, 0, -3), new Vector(0, 3, -3)));
 		
 		BufferedImage bi = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		
