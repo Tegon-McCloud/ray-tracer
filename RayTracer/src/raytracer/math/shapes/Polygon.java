@@ -4,6 +4,7 @@ import raytracer.math.Intersect;
 import raytracer.math.Ray;
 import raytracer.math.Shape;
 import raytracer.math.Vector;
+import raytracer.rendering.SurfaceProperties;
 import raytracer.rendering.UVTexture;
 
 public class Polygon extends Shape{
@@ -12,8 +13,8 @@ public class Polygon extends Shape{
 	
 	public Vector normal;
 	
-	public Polygon(UVTexture texture, Vector v1, Vector v2, Vector v3, Vector... vertices) {
-		super(texture);
+	public Polygon(UVTexture texture, SurfaceProperties surface, Vector v1, Vector v2, Vector v3, Vector... vertices) {
+		super(texture, surface);
 		
 		normal = v1.sub(v2).cross(v1.sub(v3));
 		

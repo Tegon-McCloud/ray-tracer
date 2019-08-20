@@ -4,6 +4,7 @@ import raytracer.math.Intersect;
 import raytracer.math.Ray;
 import raytracer.math.Shape;
 import raytracer.math.Vector;
+import raytracer.rendering.SurfaceProperties;
 import raytracer.rendering.UVTexture;
 
 public class Sphere extends Shape{
@@ -11,8 +12,8 @@ public class Sphere extends Shape{
 	public float radius;
 	public Vector pos;
 	
-	public Sphere(UVTexture texture, Vector pos, float radius) {
-		super(texture);
+	public Sphere(UVTexture texture, SurfaceProperties surface, Vector pos, float radius) {
+		super(texture, surface);
 		
 		this.pos = pos;
 		this.radius = radius;

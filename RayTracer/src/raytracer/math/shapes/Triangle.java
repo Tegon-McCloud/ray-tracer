@@ -4,6 +4,7 @@ import raytracer.math.Intersect;
 import raytracer.math.Ray;
 import raytracer.math.Shape;
 import raytracer.math.Vector;
+import raytracer.rendering.SurfaceProperties;
 import raytracer.rendering.UVTexture;
 
 public class Triangle extends Shape{
@@ -12,13 +13,13 @@ public class Triangle extends Shape{
 
 	private Vector normal, c1c2, c2c3, c3c1;
 
-	public Triangle(UVTexture texture, Vector corner1, Vector corner2, Vector corner3) {
-		super(texture);
+	public Triangle(UVTexture texture, SurfaceProperties surface, Vector corner1, Vector corner2, Vector corner3) {
+		super(texture, surface);
+		
 		this.corner1 = corner1;
 		this.corner2 = corner2;
 		this.corner3 = corner3;
-
-
+		
 		c1c2 = corner2.sub(corner1);
 		c2c3 = corner3.sub(corner2);
 		c3c1 = corner1.sub(corner3);
@@ -69,8 +70,6 @@ public class Triangle extends Shape{
 
 	@Override
 	public float[] toTexCoords(Vector surfacePos) {
-		return new float[][]
-		
 		return new float[2];
 	}
 

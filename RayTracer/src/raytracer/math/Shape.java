@@ -1,16 +1,17 @@
 package raytracer.math;
 
+import raytracer.rendering.SurfaceProperties;
 import raytracer.rendering.UVTexture;
 
 public abstract class Shape {
 	
 	public UVTexture texture;
 	
-	public float ks, kd, ka, shine; // phong constants
-	public float transparency, reflectivity;
+	private SurfaceProperties surface;
 	
-	public Shape(UVTexture texture) {
+	public Shape(UVTexture texture, SurfaceProperties surface) {
 		this.texture = texture;
+		this.surface = surface;
 	}
 
 	public abstract Intersect getIntersect(Ray r);
@@ -21,5 +22,9 @@ public abstract class Shape {
 	}
 	
 	public abstract float[] toTexCoords(Vector surfacePos);
+	
+	public SurfaceProperties getSurfaceProperties() {
+		return surface;
+	}
 	
 }
