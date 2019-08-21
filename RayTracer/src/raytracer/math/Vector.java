@@ -28,6 +28,10 @@ public class Vector {
 		return new Vector(x*f, y*f, z*f);
 	}
 	
+	public Vector mul(Vector v) {
+		return new Vector(x * v.x, y * v.y, z * v.z);
+	}
+	
 	public Vector div(float f) {
 		return new Vector(x/f, y/f, z/f);
 	}
