@@ -22,8 +22,6 @@ public class Camera {
 		pxWidth = width;
 		pxHeight = height;
 		
-		
-		
 		rotation = Matrix.getXRotationMatrix(vRot).mul(Matrix.getYRotationMatrix(hRot));
 	}
 	

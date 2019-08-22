@@ -3,15 +3,16 @@ package raytracer.rendering;
 public class SurfaceProperties {
 	
 	public float ks, kd, ka, shine; // phong constants
-	public float transparency, reflectivity;
+	public boolean reflective, refractive;
+	public float ior;
 	
-	public SurfaceProperties(float ks, float kd, float ka, float shine, float transparency, float reflectivity) {
+	public SurfaceProperties(float ks, float kd, float ka, float shine, boolean reflective, boolean refractive) {
 		this.ks = ks;
 		this.kd = kd;
 		this.ka = ka;
 		this.shine = shine;
-		this.transparency = transparency;
-		this.reflectivity = reflectivity;
+		this.reflective = reflective;
+		this.refractive = refractive;
 	}
 	
 	

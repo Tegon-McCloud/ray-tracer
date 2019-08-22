@@ -47,7 +47,7 @@ public class Space {
 		if(nearestIntersect == null) {
 			return background;
 		}
-
+		
 		return phongColor(r, nearestIntersect);
 	}
 
@@ -75,32 +75,38 @@ public class Space {
 		Vector ambient = ia.mul(intersect.shape.getSurfaceProperties().ka).mul(intersect.shape.getColor(P));
 		
 		Vector diffuse = new Vector(0, 0, 0);
+		Vector specular = new Vector(0, 0, 0);
 		
 		for(int i = 0; i < distantLights.size(); i++) {
 			
 			Ray shadowRay = new Ray(P.add(intersect.normal.mul(BIAS)), distantLights.get(i).dir.mul(-1));
-			System.out.println(shadowRay.ori + " " + shadowRay.dir);
-			
+
 			Intersect shadowIntersect = trace(shadowRay);
-			
-			System.out.println(shadowIntersect.shape);
 			
 			if(shadowIntersect == null) {
 				
-				float nDotlDir = intersect.normal.dot(intersect.normal);
-				Vector diffuseIncoming = distantLights.get(i).id.mul(nDotlDir * intersect.shape.getSurfaceProperties().kd);
-				Vector objectColor = intersect.shape.getColor(P);
+				float nDotlDir = intersect.normal.dot(distantLights.get(i).dir.mul(-1));
+				if(nDotlDir < 0) nDotlDir = 0;
 				
-				diffuse = diffuse.add(new Vector(diffuseIncoming.x * objectColor.x, diffuseIncoming.y * objectColor.y, diffuseIncoming.z * objectColor.z));
+				Vector diffuseIncoming = distantLights.get(i).id.mul(nDotlDir * intersect.shape.getSurfaceProperties().kd);
+				
+				diffuse = diffuse.add(diffuseIncoming.mul(intersect.shape.getColor(P)));
+				
+				float rDirDotvDir = reflectDir(distantLights.get(i).dir, intersect.normal).dot(r.dir.mul(-1));
+				
+				specular = specular.add(distantLights.get(i).is.mul(intersect.shape.getSurfaceProperties().ks * (float)(Math.pow(rDirDotvDir, intersect.shape.getSurfaceProperties().shine))));
+
 			}
 			
-		}
+		}		
 		
-		
-		return ambient.add(diffuse);
-		
+		return ambient.add(diffuse).add(specular);
 	}
-
+	
+	public static Vector reflectDir(Vector incidentDir, Vector normal) {
+		return incidentDir.sub(normal.mul(2 * normal.dot(incidentDir)));
+	}
+	
 
 	public static void main(String[] args) throws IOException {
 
@@ -109,13 +115,13 @@ public class Space {
 		
 		//s.add(new Sphere(new ImageTexture(new File("D:\\test\\texture.png")), new SurfaceProperties(0, 0, 0, 0, 0, 0), new Vector(2, 2, -2), 1));
 		
-		Camera c = new Camera(512, 512, new Vector(0, -3, 6), (float)Math.PI/2, (float)Math.PI/2, (float)Math.PI/8, 0);
+		Camera c = new Camera(2048, 2048, new Vector(0, -3, 6), (float)Math.PI/2, (float)Math.PI/2, (float)Math.PI/8, 0);
 		
-//		s.add(new Sphere(
-//				new Checkerboard(new Vector(0.5f, 0.5f, 0), new Vector(0, 0, 0.5f), 8),
-//				new SurfaceProperties(0.5f, 0.5f, 0.5f, 0.5f, 0, 0),
-//				new Vector(0, -1.5f, 0),
-//				1));
+		s.add(new Sphere(
+				new Checkerboard(new Vector(0.5f, 0.5f, 0), new Vector(0, 0, 0.5f), 8),
+				new SurfaceProperties(0.5f, 0.7f, 0.5f, 100f, true, true),
+				new Vector(0, -1f, 0),
+				1));
 
 		s.add(new Triangle(
 				new UVTexture() {
@@ -124,7 +130,7 @@ public class Space {
 						return new Vector(0.5f, 0.5f, 0.5f);
 					}
 				}, 
-				new SurfaceProperties(0.5f, 0.5f, 0.5f, 0.5f, 0, 0),
+				new SurfaceProperties(0.5f, 0.5f, 0.5f, 2f, false, false),
 				new Vector(3, 0, 3), new Vector(-3, 0, 3), new Vector(-3, 0, -3)));
 
 		s.add(new Triangle(
@@ -134,11 +140,11 @@ public class Space {
 						return new Vector(0.5f, 0.5f, 0.5f);
 					}
 				}, 
-				new SurfaceProperties(0.5f, 0.5f, 0.5f, 0.5f, 0, 0),
+				new SurfaceProperties(0.5f, 0.5f, 0.5f, 2f, false, false),
 				new Vector(-3, 0, -3), new Vector(3, 0, -3), new Vector(3, 0, 3)));
 
-		s.add(new DistantLight(new Vector(0, 1, 0).normalized(), new Vector(0.8f, 0.8f, 0.8f), new Vector(0.8f, 0.8f, 0.8f)));
-
+		s.add(new DistantLight(new Vector(1, 1, 0).normalized(), new Vector(0.8f, 0.8f, 0.8f), new Vector(0.8f, 0.8f, 0.8f)));
+		
 		BufferedImage bi = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
 		for(int i = 0; i < c.getWidth(); i++) {

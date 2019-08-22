@@ -47,6 +47,10 @@ public class Triangle extends Shape{
 		Intersect intersect = new Intersect(this);
 
 		float t = corner1.sub(r.ori).dot(normal) / r.dir.dot(normal);
+		
+		if(t < 0) {
+			return intersect;
+		}
 
 		Vector P = r.ori.add(r.dir.mul(t));
 		
