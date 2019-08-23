@@ -12,8 +12,8 @@ import raytracer.math.Intersect;
 import raytracer.math.Ray;
 import raytracer.math.Shape;
 import raytracer.math.Vector;
+import raytracer.math.shapes.Plane;
 import raytracer.math.shapes.Sphere;
-import raytracer.math.shapes.Triangle;
 
 public class Space {
 
@@ -26,11 +26,6 @@ public class Space {
 	private java.util.Vector<Shape> shapes = new java.util.Vector<Shape>();
 	private java.util.Vector<DistantLight> distantLights = new java.util.Vector<DistantLight>();
 
-
-	public Space() {
-
-	}
-
 	public void add(Shape s) {
 		shapes.add(s);
 	}
@@ -38,7 +33,6 @@ public class Space {
 	public void add(DistantLight dl) {
 		distantLights.add(dl);
 	}
-
 
 	public Vector castRay(Ray r, int depth) {
 
@@ -122,26 +116,31 @@ public class Space {
 				new SurfaceProperties(0.5f, 0.7f, 0.5f, 100f, true, true),
 				new Vector(0, -1f, 0),
 				1));
-
-		s.add(new Triangle(
-				new UVTexture() {
-					@Override
-					public Vector getColor(float texX, float texY) {
-						return new Vector(0.5f, 0.5f, 0.5f);
-					}
-				}, 
+		
+		s.add(new Plane(
+				new Checkerboard(new Vector(0.5f, 0, 0), new Vector(0, 0, 0.5f), 10),
 				new SurfaceProperties(0.5f, 0.5f, 0.5f, 2f, false, false),
 				new Vector(3, 0, 3), new Vector(-3, 0, 3), new Vector(-3, 0, -3)));
 
-		s.add(new Triangle(
-				new UVTexture() {
-					@Override
-					public Vector getColor(float texX, float texY) {
-						return new Vector(0.5f, 0.5f, 0.5f);
-					}
-				}, 
-				new SurfaceProperties(0.5f, 0.5f, 0.5f, 2f, false, false),
-				new Vector(-3, 0, -3), new Vector(3, 0, -3), new Vector(3, 0, 3)));
+//		s.add(new Triangle(
+//				new UVTexture() {
+//					@Override
+//					public Vector getColor(float texX, float texY) {
+//						return new Vector(0.5f, 0.5f, 0.5f);
+//					}
+//				}, 
+//				new SurfaceProperties(0.5f, 0.5f, 0.5f, 2f, false, false),
+//				new Vector(3, 0, 3), new Vector(-3, 0, 3), new Vector(-3, 0, -3)));
+//
+//		s.add(new Triangle(
+//				new UVTexture() {
+//					@Override
+//					public Vector getColor(float texX, float texY) {
+//						return new Vector(0.5f, 0.5f, 0.5f);
+//					}
+//				}, 
+//				new SurfaceProperties(0.5f, 0.5f, 0.5f, 2f, false, false),
+//				new Vector(-3, 0, -3), new Vector(3, 0, -3), new Vector(3, 0, 3)));
 
 		s.add(new DistantLight(new Vector(1, 1, 0).normalized(), new Vector(0.8f, 0.8f, 0.8f), new Vector(0.8f, 0.8f, 0.8f)));
 		
@@ -151,6 +150,11 @@ public class Space {
 			for(int j = 0; j < c.getHeight(); j++) {
 
 				Vector vecColor = s.castRay(c.getRay(i, j), 0);
+				if(vecColor.x > 1) vecColor.x = 1;
+				if(vecColor.y > 1) vecColor.y = 1;
+				if(vecColor.z > 1) vecColor.z = 1;
+					
+					
 				Color color = new Color(vecColor.x, vecColor.y, vecColor.z);
 				bi.setRGB(i, j, color.getRGB());
 			}
