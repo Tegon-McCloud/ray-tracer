@@ -35,6 +35,10 @@ public class Matrix {
 			 + "|\t" + m20 + "\t" + m21 + "\t" + m22 + "\t|";
 	}
 	
+	public String toGGB() {
+		return "{" + "{" + m00 + ", " + m01 + ", " + m02 + "}," + "{" + m10 + ", " + m11 + ", " + m12 + "}," + "{" + m20 + ", " + m21 + ", " + m22 + "}" + "}";
+	}
+	
 	public static Matrix getXRotationMatrix(float theta) {
 		
 		float sin = (float)Math.sin(theta);
