@@ -36,9 +36,9 @@ public class Space {
 	}
 
 	public Vector castRay(Ray r, int depth) {
-
+		
 		Intersect nearestIntersect = trace(r);
-
+		
 		if(nearestIntersect == null) {
 			return background;
 		}
@@ -48,6 +48,8 @@ public class Space {
 
 	public Intersect trace(Ray r) {
 
+		
+		
 		Intersect intersect = null;
 
 		for(int i = 0; i < shapes.size(); i++) {
@@ -121,7 +123,7 @@ public class Space {
 		s.add(new Cylinder(
 				new Checkerboard(new Vector(0.5f, 0.5f, 0), new Vector(0, 0, 0.5f), 8),
 				new SurfaceProperties(0.5f, 0.7f, 0.5f, 100f, true, true), 
-				new Vector(1, 2, 3), new Vector(4, 5, 6), 1));
+				new Vector(-1, -1, 3), new Vector(1, -2, 0), 1));
 		
 		s.add(new Plane(
 				new Checkerboard(new Vector(0.5f, 0, 0), new Vector(0, 0, 0.5f), 10),

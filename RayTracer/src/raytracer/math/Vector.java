@@ -59,7 +59,16 @@ public class Vector {
 	
 	@Override
 	public String toString() {
-		return "Vector((" + x + ", " + y + ", " + z +")),";
+		return "<" + x + ", " + y + ", " + z + ">";
+	}
+	
+	public String toGGB() {
+		return "Vector((" + x + ", " + y + ", " + z +"))";
+	}
+	
+	
+	public String toPointGGB() {
+		return "(" + x + ", " + y + ", " + z + ")";
 	}
 	
 }
