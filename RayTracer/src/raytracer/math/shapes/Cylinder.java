@@ -11,7 +11,7 @@ import raytracer.rendering.UVTexture;
 public class Cylinder extends Shape {
 	
 	public Vector translation;
-	public Matrix rot1, rot2; 
+	public Matrix rotation, invRotation;
 	public float radius, h;
 	
 	public Cylinder(UVTexture texture, SurfaceProperties surface, Vector p1, Vector p2, float r) {
@@ -22,21 +22,31 @@ public class Cylinder extends Shape {
 		
 		float projectedP2Length = (float)Math.sqrt(p2Translated.x*p2Translated.x + p2Translated.y*p2Translated.y);
 		float zRot = (float)Math.acos(p2Translated.x/projectedP2Length);
-		rot1 = Matrix.getZRotationMatrix(-zRot);
+		Matrix rot1 = Matrix.getZRotationMatrix(-zRot);
 		
 		Vector p2Transformed1 = p2Translated.mul(rot1);
 		float yRot = (float)Math.acos(p2Transformed1.z/p2Transformed1.length());
-		rot2 = Matrix.getYRotationMatrix(-yRot);
+		Matrix rot2 = Matrix.getYRotationMatrix(-yRot);
 		
 		h = p2Translated.length();
-		this.radius = r;
+		radius = r;
+		rotation = rot2.mul(rot1);
+		invRotation = rotation.inverse();
+		
+		
+		System.out.println(p2);
+		
+		System.out.println(translation);
+		System.out.println(rotation.toGGB());
+		System.out.println(invRotation.toGGB());
+		
 	}
 
 	@Override
 	public Intersect getIntersect(Ray r) {
 		Intersect intersect = new Intersect(this);
 		
-		Ray rTransformed = new Ray(r.ori.add(translation).mul(rot1).mul(rot2), r.dir.mul(rot1).mul(rot2));
+		Ray rTransformed = new Ray(r.ori.add(translation).mul(rotation), r.dir.mul(rotation));
 		
 		// r*r=x*x+y*y
 		// P = A + t * B
@@ -56,7 +66,6 @@ public class Cylinder extends Shape {
 			return intersect;
 		}
 		
-
 		float t1 = (-b + (float)Math.sqrt(disc))/(2*a);
 		float t2 = (-b - (float)Math.sqrt(disc))/(2*a);
 		
@@ -68,18 +77,33 @@ public class Cylinder extends Shape {
 		}else {
 			intersect.dist = t1 < t2 && t1Hit ? t1 : t2;
 			
-			// do surface normal
+			intersect.normal = rTransformed.ori.add(rTransformed.dir.mul(intersect.dist));
+			intersect.normal.z = 0;
+			intersect.normal.div(radius);
+			intersect.normal.mul(invRotation);
 			
+			intersect.normal = new Vector(0, 1, 0);
+			
+			if(t1Hit ^ t2Hit) {
+				intersect.normal.mul(-1);
+			}
+			
+			return intersect;
 		}
-		
-		
 		
 	}
 
 	@Override
 	public float[] toTexCoords(Vector surfacePos) {
-		// TODO Auto-generated method stub
-		return null;
+		float[] tex = new float[2];
+		
+		Vector spTransformed = surfacePos.add(translation);
+		spTransformed = spTransformed.mul(rotation);
+		
+		tex[0] = 0;
+		tex[1] = spTransformed.z/h;
+		
+		return tex;
 	}
 	
 	public static void main(String[] args) {

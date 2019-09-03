@@ -28,6 +28,40 @@ public class Matrix {
 		
 	}
 	
+	public float determinant() {
+		// Sarrus rule
+		return m00 * m11 * m22 + m01 * m12 * m20 + m02 * m10 * m21 - (m20 * m11 * m02 + m21 * m12 * m00 + m22 * m10 * m01);
+	}
+	
+	public Matrix transposed() {
+		return new Matrix(
+				m00, m10, m20,
+				m01, m11, m21,
+				m02, m12, m22);
+	}
+	
+	public Matrix adjugate() {
+		Matrix mT = transposed();
+		
+		return new Matrix(
+				(mT.m11 * mT.m22 - mT.m12 * mT.m21), -(mT.m10 * mT.m22 - mT.m12 * mT.m20), (mT.m10 * mT.m21 - mT.m11 * mT.m20),
+				-(mT.m01 * mT.m22 - mT.m02 * mT.m21), (mT.m00 * mT.m22 - mT.m02 * mT.m20), -(mT.m00 * mT.m21 - mT.m01 * mT.m20),
+				(mT.m01 * mT.m12 - mT.m02 * mT.m11), -(mT.m00 * mT.m12 - mT.m02 * mT.m10), (mT.m00 * mT.m11 - mT.m01 * mT.m10)
+				);
+	}
+	
+	public Matrix inverse() {
+		Matrix adjm = adjugate();
+		float det = determinant();
+		
+		return new Matrix(
+				adjm.m00/det, adjm.m01/det, adjm.m02/det,
+				adjm.m10/det, adjm.m11/det, adjm.m12/det, 
+				adjm.m20/det, adjm.m21/det, adjm.m22/det
+				);
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "|\t" + m00 + "\t" + m01 + "\t" + m02 + "\t|\n"
@@ -74,4 +108,5 @@ public class Matrix {
 				0, 0, 1
 				);
 	}
+	
 }

@@ -12,6 +12,7 @@ import raytracer.math.Intersect;
 import raytracer.math.Ray;
 import raytracer.math.Shape;
 import raytracer.math.Vector;
+import raytracer.math.shapes.Cylinder;
 import raytracer.math.shapes.Plane;
 import raytracer.math.shapes.Sphere;
 
@@ -111,11 +112,16 @@ public class Space {
 		
 		Camera c = new Camera(2048, 2048, new Vector(0, -3, 6), (float)Math.PI/2, (float)Math.PI/2, (float)Math.PI/8, 0);
 		
-		s.add(new Sphere(
+//		s.add(new Sphere(
+//				new Checkerboard(new Vector(0.5f, 0.5f, 0), new Vector(0, 0, 0.5f), 8),
+//				new SurfaceProperties(0.5f, 0.7f, 0.5f, 100f, true, true),
+//				new Vector(0, -1f, 0),
+//				1));
+		
+		s.add(new Cylinder(
 				new Checkerboard(new Vector(0.5f, 0.5f, 0), new Vector(0, 0, 0.5f), 8),
-				new SurfaceProperties(0.5f, 0.7f, 0.5f, 100f, true, true),
-				new Vector(0, -1f, 0),
-				1));
+				new SurfaceProperties(0.5f, 0.7f, 0.5f, 100f, true, true), 
+				new Vector(1, 2, 3), new Vector(4, 5, 6), 1));
 		
 		s.add(new Plane(
 				new Checkerboard(new Vector(0.5f, 0, 0), new Vector(0, 0, 0.5f), 10),
