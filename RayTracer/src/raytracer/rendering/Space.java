@@ -127,7 +127,7 @@ public class Space {
 		
 		s.add(new Plane(
 				new Checkerboard(new Vector(0.5f, 0, 0), new Vector(0, 0, 0.5f), 10),
-				new SurfaceProperties(0.5f, 0.5f, 0.5f, 2f, false, false),
+				new SurfaceProperties(0.2f, 0.5f, 0.5f, 2f, false, false),
 				new Vector(3, 0, 3), new Vector(-3, 0, 3), new Vector(-3, 0, -3)));
 
 //		s.add(new Triangle(

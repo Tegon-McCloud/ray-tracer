@@ -35,7 +35,7 @@ public class Plane extends Shape{
 			return intersect;
 		}
 		
-		float t = p1.sub(r.ori).dot(normal) / nDotDir;
+		float t = p1.sub(r.ori).dot(normal)	 / nDotDir;
 
 		if(t < 0) {
 			return intersect;

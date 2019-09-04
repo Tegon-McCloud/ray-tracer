@@ -113,10 +113,21 @@ public class Cylinder extends Shape {
 	public float[] toTexCoords(Vector surfacePos) {
 		float[] tex = new float[2];
 		
-		Vector spTransformed = surfacePos.add(translation);
-		spTransformed = spTransformed.mul(rotation);
+		Vector spTransformed = surfacePos.add(translation).mul(rotation);
 		
-		tex[0] = 0;
+		//System.out.println(spTransformed.toGGB());
+		
+		float angle = (float)Math.acos(spTransformed.x/radius);
+		
+		if(spTransformed.y < 0) {
+			angle = 2*(float)Math.PI - angle;
+		}
+		
+		//System.out.println(angle);
+		
+		tex[0] = angle/(2*(float)Math.PI);
+		
+		
 		tex[1] = spTransformed.z/h;
 		
 		return tex;
