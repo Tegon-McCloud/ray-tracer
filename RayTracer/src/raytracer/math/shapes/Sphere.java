@@ -63,8 +63,10 @@ public class Sphere extends Shape{
 			return intersect;
 		}
 		
-		float t1 = (-b + (float)Math.sqrt(disc))/(2*a);
-		float t2 = (-b - (float)Math.sqrt(disc))/(2*a);
+		float sqrtDisc = (float)Math.sqrt(disc);
+		
+		float t1 = (-b + sqrtDisc)/(2*a);
+		float t2 = (-b - sqrtDisc)/(2*a);
 		
 		boolean t1Hit = t1 > 0;
 		boolean t2Hit = t2 > 0;

@@ -45,9 +45,6 @@ public class Cylinder extends Shape {
 		invRotation = rotation.inverse();
 		
 		radius = r;
-		
-		System.out.println(rotation.toGGB());
-		System.out.println(invRotation.toGGB());
 
 	}
 
@@ -68,7 +65,7 @@ public class Cylinder extends Shape {
 		
 		float a = rT.dir.x * rT.dir.x + rT.dir.y * rT.dir.y;
 		float b = 2 * (rT.ori.x * rT.dir.x + rT.ori.y * rT.dir.y);
-		float c = rT.ori.x * rT.ori.x + rT.ori.y * rT.ori.y - radius * radius;
+		float c = rT.ori.x * rT.ori.x + rT.ori.y * rT.ori.y;
 
 		float disc = b*b - 4*a*c;
 		
@@ -76,8 +73,10 @@ public class Cylinder extends Shape {
 			return intersect;
 		}
 		
-		float t1 = (-b + (float)Math.sqrt(disc))/(2*a);
-		float t2 = (-b - (float)Math.sqrt(disc))/(2*a);
+		float sqrtDisc = (float)Math.sqrt(disc);
+		
+		float t1 = (-b + sqrtDisc)/(2*a);
+		float t2 = (-b - sqrtDisc)/(2*a);
 		
 		if(t2 < t1) {
 			float swap = t1;

@@ -12,9 +12,9 @@ import raytracer.math.Intersect;
 import raytracer.math.Ray;
 import raytracer.math.Shape;
 import raytracer.math.Vector;
+import raytracer.math.shapes.Cone;
 import raytracer.math.shapes.Cylinder;
 import raytracer.math.shapes.Plane;
-import raytracer.math.shapes.Sphere;
 
 public class Space {
 
@@ -120,7 +120,7 @@ public class Space {
 //				new Vector(0, -1f, 0),
 //				1));
 		
-		s.add(new Cylinder(
+		s.add(new Cone(
 				new Checkerboard(new Vector(0.5f, 0.5f, 0), new Vector(0, 0, 0.5f), 8),
 				new SurfaceProperties(0.5f, 0.7f, 0.5f, 100f, true, true), 
 				new Vector(-1, -1, 3), new Vector(1, -2, 0), 1));
