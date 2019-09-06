@@ -122,8 +122,8 @@ public class Space {
 		
 		s.add(new Cone(
 				new Checkerboard(new Vector(0.5f, 0.5f, 0), new Vector(0, 0, 0.5f), 8),
-				new SurfaceProperties(0.5f, 0.7f, 0.5f, 100f, true, true), 
-				new Vector(-1, -1, 3), new Vector(1, -2, 0), 1));
+				new SurfaceProperties(0.5f, 0.7f, 0.5f, 1000f, true, true), 
+				new Vector(-1, 0, 3), new Vector(1, -3, 0), 1));
 		
 		s.add(new Plane(
 				new Checkerboard(new Vector(0.5f, 0, 0), new Vector(0, 0, 0.5f), 10),

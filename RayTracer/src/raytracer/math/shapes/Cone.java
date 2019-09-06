@@ -86,11 +86,19 @@ public class Cone extends Shape {
 			return intersect;
 		}else {
 			intersect.dist = t1Hit ? t1 : t2;
+			Vector spTransformed = rT.ori.add(rT.dir.mul(intersect.dist));
 			
+			float theta =  (float)Math.acos(spTransformed.x/Math.sqrt(spTransformed.x*spTransformed.x + spTransformed.y*spTransformed.y));
+			if(spTransformed.y < 0) {
+				theta = 2*(float)Math.PI - theta;
+			}
 			
-			//intersect.normal = rT.ori.add(rT.dir.mul(intersect.dist));
-			//intersect.normal.z = radius;
-			//intersect.normal = intersect.normal.div(radius).mul(invRotation);
+			float h2 = h*h;
+			float sidelength = (float)Math.sqrt(r2*h2 + h2);
+			float hOverSide = h/sidelength;
+			
+			intersect.normal = new Vector((float)Math.cos(theta) * hOverSide, (float)Math.sin(theta) * hOverSide, -radius*hOverSide);
+			intersect.normal = intersect.normal.mul(invRotation);
 			
 			if(!t1Hit) {
 				intersect.normal = intersect.normal.mul(-1);
